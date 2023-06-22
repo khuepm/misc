@@ -67,3 +67,11 @@ Include this file into `~/.bashrc` then reload terminal session. You can also ru
 ```
 source ~/auto-nvmrc.sh
 ```
+
+## Launch ssh-agent in new session and reuse the session
+
+ssh-agent is basically launched per session. So I usually reuse one session across all other terminals. 
+To do this i have the following setting in my .bashrc
+
+- When bash is started, it launches a new ssh-agent and store the all environment variables into .ssh/environment
+- When another bash is started, it loads environment from .ssh/environment so that it can connect to the existing ssh-agent process. So it does not start another ssh-agent process.
