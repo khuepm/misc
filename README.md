@@ -23,18 +23,18 @@ check_env_files.sh
 2. Ensure you have a `.env.template` file with all required environment variables.
 3. Make the script executable:
    ```
-   chmod +x checkenv.sh
+   chmod +x check_env_files.sh
    ```
 4. Run the script:
    ```
-   ./checkenv.sh
+   ./check_env_files.sh
    ```
 5. (optional) Add to `package.json` to check every start yarn
     ```
     {
       ...
       scripts: {
-        "prestart": "sh checkenv.sh",
+        "prestart": "sh check_env_files.sh",
       }
     }
     ```
