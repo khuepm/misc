@@ -1,5 +1,3 @@
-#!/bin/bash
-
 template=".env.template"
 
 # Check if the template file exists
@@ -7,6 +5,8 @@ if [ ! -f "$template" ]; then
   echo "Error: $template not found"
   return 1
 fi
+
+errors_found=false
 
 check_env_files() {
   files_not_to_check=(".env.template")
@@ -28,7 +28,6 @@ check_env_files() {
   # Variables to store output and result
   output=""
   result=""
-  errors_found=false
   # Function to update the screen
   update_screen() {
     # Clear the screen
@@ -53,6 +52,10 @@ check_env_files() {
       output+="Checking $file...\n\n"
       error_count=0
       while IFS= read -r line || [[ -n "$line" ]]; do
+        # Skip empty lines and comment lines
+        if [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]]; then
+          continue
+        fi
         key=$(echo "$line" | cut -d'=' -f1)
         if ! grep -q "^$key=" "$file"; then
           output+="\033[31m  💔 Missing in $file: $key\033[0m\n"
