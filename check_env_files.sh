@@ -179,23 +179,30 @@ sync_env_files() {
 
 if [ "$errors_found" = true ]; then
   echo "Errors were found in some .env files."
-  echo "Do you want to sync .env files with .env.template? (y/N)"
-  read -n 1 -r answer
-  echo    # move to a new line
-  if [[ $answer =~ ^[Yy]$ ]]; then
-    sync_env_files
+  echo "\033[33mDo you want to sync .env files with .env.template? (Y/n)\033[0m"
+  echo "(Enter/Y/y for Yes | Any other key for No)"
+  echo "Auto-skipping in 10 seconds..."
+  answer="nokeypressed"
+  read -t 10 -n 1 -r -s answer
 
-    #echo "Clearing cache and starting yarn..."
-    ## Clear React Native cache
-    #rm -rf $TMPDIR/react-*
-    #rm -rf $TMPDIR/metro-*
-    #watchman watch-del-all
-    
-    # Clear yarn cache
-    yarn cache clean
+  if [[ $answer == "nokeypressed" ]]; then
+    echo "\033[33mSync operation cancelled.\033[0m"
   else
-    echo "Sync operation cancelled."
+    if [[ $answer =~ ^[Yy]$ ]] || [[ $answer == "" ]]; then
+      sync_env_files
+
+      ## Clear React Native cache
+      #rm -rf $TMPDIR/react-*
+      #rm -rf $TMPDIR/metro-*
+      #watchman watch-del-all
+      
+      # Clear yarn cache
+      yarn cache clean
+    else
+      echo "\033[33mSync operation cancelled.\033[0m"
+    fi
   fi
+  
 else
   echo "\033[32m🟢 No errors found in .env files. Sync not needed.\033[0m"
 fi
