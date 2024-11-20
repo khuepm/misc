@@ -1,4 +1,14 @@
 template=".env.template"
+package_manager="yarn"
+# Check for package manager parameter
+if [ $# -gt 0 ]; then
+  package_manager="$1"
+  # Validate package manager
+  if [[ ! "$package_manager" =~ ^(npm|yarn|pnpm)$ ]]; then
+    echo "Invalid package manager. Using yarn as default."
+    package_manager="yarn"
+  fi
+fi
 
 # Check if the template file exists
 if [ ! -f "$template" ]; then
@@ -308,8 +318,21 @@ if [ "$errors_found" = true ]; then
       #rm -rf $TMPDIR/metro-*
       #watchman watch-del-all
       
-      # Clear yarn cache
-      yarn cache clean
+      # Clear package manager cache
+      case $package_manager in
+        "npm")
+          echo "Clearing npm cache..."
+          npm cache clean --force
+          ;;
+        "yarn") 
+          echo "Clearing yarn cache..."
+          yarn cache clean
+          ;;
+        "pnpm")
+          echo "Clearing pnpm cache..."
+          pnpm store prune
+          ;;
+      esac
     else
       echo "\033[33mSync operation cancelled.\033[0m"
     fi
