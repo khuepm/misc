@@ -3,13 +3,21 @@ template=".env.template"
 # Check if the template file exists
 if [ ! -f "$template" ]; then
   echo "Error: $template not found"
-  return 1
+  echo "Please enter the name of your template file (e.g. .env.template):"
+  read template_input
+  
+  if [ ! -f "$template_input" ]; then
+    echo "Error: $template_input not found either. Please ensure a template file exists."
+    return 1
+  fi
+  
+  template=$template_input
 fi
 
 errors_found=false
 
 check_env_files() {
-  files_not_to_check=(".env.template")
+  files_not_to_check=("$template")
   # Get all .env files in the current directory
   files_to_check=($(find . -maxdepth 1 -type f -name '.env*'))
 
