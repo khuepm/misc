@@ -70,10 +70,22 @@ check_env_files() {
   if [ ${#files_to_check[@]} -eq 1 ]; then
     echo "\033[33m🟠 No .env files found. Creating $default_env_file from template...\033[0m"
     cp "$template" "$default_env_file"
-    echo "\033[32m✅ Created $default_env_file. Proceeding to clean yarn cache.\033[0m"
-
-    # Call the warning check function
-    yarn cache clean
+    echo "\033[32m✅ Created $default_env_file. Proceeding to clean cache.\033[0m"
+      
+    case $package_manager in
+      "npm")
+        echo "Clearing npm cache..."
+        npm cache clean --force
+        ;;
+      "yarn") 
+        echo "Clearing yarn cache..."
+        yarn cache clean
+        ;;
+      "pnpm")
+        echo "Clearing pnpm cache..."
+        pnpm store prune
+        ;;
+    esac
 
     # Call the warning check function
     check_template_warnings
