@@ -38,6 +38,18 @@ check_env_files.sh
     ```
 You can change `sh` to `bash` if you want to use bash instead of sh, especially on Ubuntu.
 
+6. (optional) Add parameter to specify the package manager
+    ```
+    {
+      ...
+      scripts: {
+        "prestart": "sh check_env_files.sh <package-manager>",
+      }
+    }
+    ```
+
+Supported package managers: `npm`, `yarn`, `pnpm`
+
 ## What it does
 
 1. **Checking Environment Files**:
