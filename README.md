@@ -1,5 +1,3 @@
-# MacOS
-
 # Environment File Checker and Syncer
 
 Intro: This bash script provides functionality to check and sync environment files in your project.
@@ -38,6 +36,7 @@ check_env_files.sh
       }
     }
     ```
+You can change `sh` to `bash` if you want to use bash instead of sh, especially on Ubuntu.
 
 ## What it does
 
